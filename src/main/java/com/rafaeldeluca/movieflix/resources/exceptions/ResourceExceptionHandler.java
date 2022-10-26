@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.rafaeldeluca.movieflix.services.exceptions.DataBaseException;
+import com.rafaeldeluca.movieflix.services.exceptions.ForbiddenException;
 import com.rafaeldeluca.movieflix.services.exceptions.ResourceNotFoundException;
+import com.rafaeldeluca.movieflix.services.exceptions.UnauthorizedException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
@@ -61,4 +63,22 @@ public class ResourceExceptionHandler {
 		
 		return ResponseEntity.status(status).body(erro);
 	}
+	
+	//erro 403
+	@ExceptionHandler(ForbiddenException.class)
+	public ResponseEntity<OAuthCustomError> forbiden(ForbiddenException error, HttpServletRequest request) {
+		
+		OAuthCustomError erro = new OAuthCustomError("Forbidden", error.getMessage());
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(erro);
+	}
+	
+	//erro 401
+	@ExceptionHandler(UnauthorizedException.class)
+	public ResponseEntity<OAuthCustomError> unauthorized(UnauthorizedException error, HttpServletRequest request) {
+		
+		OAuthCustomError erro = new OAuthCustomError("Unauthorized", error.getMessage());
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(erro);
+	}
+	
+	
 }
