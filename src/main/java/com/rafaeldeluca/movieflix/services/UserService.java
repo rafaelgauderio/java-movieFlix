@@ -22,7 +22,10 @@ public class UserService implements UserDetailsService {
 	private static Logger logger = LoggerFactory.getLogger(UserService.class);
 	
 	@Autowired
-	private UserRepository userRepository;	
+	private UserRepository userRepository;
+	
+	@Autowired
+	private AuthService authService;
 	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -41,6 +44,8 @@ public class UserService implements UserDetailsService {
 	
 	@Transactional(readOnly = true)
 	public UserDTO findById(Long id) {
+		
+		authService.validateSelfOrAdmin(id);
 		
 		Optional <User> object = userRepository.findById(id);
 		User entity = object.orElseThrow(() -> new ResourceNotFoundException("Entidade não foi encontrada"));

@@ -195,4 +195,16 @@ public class User implements Serializable , UserDetails{
 		return true;
 	}
 
+
+
+	public boolean hasHole(String NomeDaRegra) {
+		
+		for (Role role : roles) {
+			if(role.getAuthority().equals(NomeDaRegra)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
