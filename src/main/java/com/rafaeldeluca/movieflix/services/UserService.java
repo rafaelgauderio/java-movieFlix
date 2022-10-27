@@ -53,5 +53,18 @@ public class UserService implements UserDetailsService {
 		return userDTO;
 		
 	}
+	
+	@Transactional(readOnly = true)
+	public UserDTO returnUserProfile( ) {		
+		
+		User user = authService.authenticated();
+		Long id = user.getId();
+		authService.validateSelfOrAdmin(id);
+		UserDTO userDTO = new UserDTO(user);
+		return userDTO;
+		
+		
+	}
+
 
 }
